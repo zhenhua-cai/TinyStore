@@ -1,0 +1,14 @@
+.product-item {
+  max-width: 300px;
+}
+.price{
+  color:deepskyblue;
+  font-size: 1.5em;
+}
+.card-text{
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+}

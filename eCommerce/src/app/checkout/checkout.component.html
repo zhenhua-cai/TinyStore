@@ -1,0 +1,224 @@
+<div class="m-5 checkout-form">
+  <div class="m-5 p-5">
+    <form [formGroup]="placeOrderForm" (ngSubmit)="onSubmit()">
+      <fieldset class="p-3 customer-fieldset" formGroupName="customerInfo">
+        <legend class="customer-border">Customer</legend>
+        <div class="form-row">
+          <div class="col-md-4">
+            <label for="firstname">First Name</label>
+            <input type="text" class="form-control"
+                   id="firstname" placeholder="first name"
+                   formControlName="firstName"
+            name="firstName" required>
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('customerInfo.firstName').touched && placeOrderForm.get('customerInfo.firstName').hasError('required')">
+              First name is required
+            </span>
+          </div>
+        </div>
+        <div class="form-row mt-3">
+          <div class="col-md-4">
+            <label for="middleName">Middle Name</label>
+            <input type="text" class="form-control" id="middleName"
+                   placeholder="middle name"
+                   formControlName="middleName"
+            name="middleName" >
+          </div>
+        </div>
+        <div class="form-row mt-3">
+          <div class="col-md-4">
+            <label for="lastname">Last Name</label>
+            <input type="text" class="form-control"
+                   formControlName="lastName"
+                   id="lastname" placeholder="last name" required
+            name="lastName">
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('customerInfo.lastName').touched && placeOrderForm.get('customerInfo.lastName').hasError('required')">
+              Last name is required
+            </span>
+          </div>
+        </div>
+        <div class="form-row mt-3">
+          <div class="col-md-4">
+            <label for="email">Email</label>
+            <input type="email" class="form-control"
+                   id="email" name="email"
+                   formControlName="email"
+                   placeholder="example@email.com" email required>
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('customerInfo.email').touched && placeOrderForm.get('customerInfo.email').hasError('required')">
+              Email is required
+            </span>
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('customerInfo.email').touched && placeOrderForm.get('customerInfo.email').hasError('email')">
+              Email is invalid
+            </span>
+          </div>
+        </div>
+      </fieldset>
+
+
+      <fieldset class="mt-5 p-3 customer-fieldset" formGroupName="shippingAddress">
+        <legend class="customer-border">Shipping Address</legend>
+
+        <div class="form-row">
+          <div class="col-md-2">
+            <label for="country">Country</label>
+            <select name="country" id="country" class="custom-select" formControlName="country" required>
+              <option value="0">Select a country</option>
+              <option value="1">United States</option>
+              <option value="2">China</option>
+            </select>
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('shippingAddress.country').touched && placeOrderForm.get('shippingAddress.country').hasError('required')">
+              Country is required
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group mt-3">
+          <label for="street">Street</label>
+          <input type="text" class="form-control" id="street" name="street" formControlName="street" required>
+          <span class="help-block error"
+                *ngIf="placeOrderForm.get('shippingAddress.street').touched && placeOrderForm.get('shippingAddress.street').hasError('required')">
+              Street is required
+            </span>
+        </div>
+        <div class="form-row">
+          <div class="col-md-3 mb-3 pr-5">
+            <label for="city">City</label>
+            <input type="text" class="form-control" id="city" name="city" formControlName="city" required>
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('shippingAddress.city').touched && placeOrderForm.get('shippingAddress.city').hasError('required')">
+              City is required
+            </span>
+          </div>
+          <div class="col-md-3 mb-3 pr-5 pl-5">
+            <label for="state">State</label>
+            <select name="state" id="state" class="custom-select" formControlName="state" required>
+              <option value="0">Select a state</option>
+              <option value="1">New York</option>
+              <option value="2">Wisconsin</option>
+            </select>
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('shippingAddress.state').touched && placeOrderForm.get('shippingAddress.state').hasError('required')">
+              State is required
+            </span>
+          </div>
+          <div class="col-md-3 mb-3 pl-5 pr-5">
+            <label for="zipcode">Zip Code</label>
+            <input type="text" class="form-control" id="zipcode" name="zipcode" formControlName="zipcode" required>
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('shippingAddress.zipcode').touched && placeOrderForm.get('shippingAddress.zipcode').hasError('required')">
+              Zip Code is required
+            </span>
+          </div>
+
+        </div>
+      </fieldset>
+
+      <fieldset class="mt-5 p-3 customer-fieldset" formGroupName="billingAddress">
+        <legend class="customer-border">Billing Address</legend>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox"
+                   id="sameAsShipping" (change)="onSelectSameAsShipping()"
+                   [checked]="sameAsShipping">
+            <label class="form-check-label" for="sameAsShipping">
+              Same as shipping address
+            </label>
+          </div>
+        </div>
+        <div *ngIf="!sameAsShipping">
+          <div class="form-row">
+            <div class="col-md-2">
+              <label for="billing-country">Country</label>
+              <select name="billingCountry" id="billing-country"
+                      formControlName="billingCountry"
+                      class="custom-select" >
+                <option value="0">Select a country</option>
+                <option value="1">United States</option>
+                <option value="2">China</option>
+              </select>
+              <span class="help-block error"
+                    *ngIf="placeOrderForm.get('billingAddress.billingCountry').touched && placeOrderForm.get('billingAddress.billingCountry').hasError('required')">
+              Country is required
+            </span>
+            </div>
+          </div>
+          <div class="form-group mt-3">
+            <label for="billing-street">Street</label>
+            <input type="text" class="form-control" id="billing-street"
+                   name="billingStreet"
+                   formControlName="billingStreet"
+            >
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('billingAddress.billingStreet').touched && placeOrderForm.get('billingAddress.billingStreet').hasError('required')">
+              Street is required
+            </span>
+          </div>
+          <div class="form-row">
+            <div class="col-md-3 mb-3 pr-5">
+              <label for="billing-city">City</label>
+              <input type="text" class="form-control"
+                     name="billingCity"
+                     formControlName="billingCity"
+                     id="billing-city" >
+              <span class="help-block error"
+                    *ngIf="placeOrderForm.get('billingAddress.billingCity').touched && placeOrderForm.get('billingAddress.billingCity').hasError('required')">
+              City is required
+            </span>
+            </div>
+            <div class="col-md-3 mb-3 pr-5 pl-5">
+              <label for="billing-state">State</label>
+              <select name="billingState" id="billing-state"
+                      formControlName="billingState"
+                      class="custom-select" >
+                <option value="0">Select a state</option>
+                <option value="1">New York</option>
+                <option value="2">Wisconsin</option>
+              </select>
+              <span class="help-block error"
+                    *ngIf="placeOrderForm.get('billingAddress.billingState').touched && placeOrderForm.get('billingAddress.billingState').hasError('required')">
+              State is required
+            </span>
+            </div>
+            <div class="col-md-3 mb-3 pl-5 pr-5">
+              <label for="billing-zipcode">Zip Code</label>
+              <input type="text" class="form-control"
+                     name="billingZipcode"
+                     formControlName="billingZipcode"
+                     id="billing-zipcode">
+              <span class="help-block error"
+                    *ngIf="placeOrderForm.get('billingAddress.billingZipcode').touched && placeOrderForm.get('billingAddress.billingZipcode').hasError('required')">
+              Zip Code is required
+            </span>
+            </div>
+          </div>
+        </div>
+
+      </fieldset>
+
+      <fieldset class="mt-5 p-3 customer-fieldset">
+        <legend class="customer-border">Order Summary</legend>
+        <table>
+          <tr>
+            <th>Products:</th>
+            <td><span class="ml-5">{{productPrice | currency :'USD'}}</span></td>
+          </tr>
+          <tr>
+            <th>Shipping Fee:</th>
+            <td><span class="ml-5">{{shippingFee | currency:'USD'}}</span></td>
+          </tr>
+          <tr>
+            <th> Order Total:</th>
+            <td><span class="ml-5">{{totalPrice | currency:'USD'}}</span></td>
+          </tr>
+        </table>
+      </fieldset>
+
+      <button type="submit" class="btn btn-primary my-5" [disabled]="placeOrderForm.invalid">Place Order</button>
+    </form>
+  </div>
+
+</div>

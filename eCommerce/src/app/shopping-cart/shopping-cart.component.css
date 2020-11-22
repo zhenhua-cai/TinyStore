@@ -1,0 +1,10 @@
+.shopping-cart{
+  background-color: #f3f1e2;
+  border-radius: 10px;
+}
+.empty-cart{
+  height: 200px;
+}
+.price{
+  color:deepskyblue;
+}

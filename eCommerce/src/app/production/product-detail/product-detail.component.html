@@ -1,0 +1,25 @@
+<div class="product-detail m-5">
+  <div class="d-flex">
+    <div class="flex-grow-0">
+      <img src="{{product.imageUrl}}" alt="" height="500px">
+    </div>
+    <div class="flex-grow-1 m-5">
+      <div>
+          <span class="font-weight-bold product-title">{{product.name}}</span>
+      </div>
+      <div class="my-2">
+          <span class="product-price">
+            {{product.unitPrice | currency: 'USD'}}
+          </span>
+      </div>
+      <div class="my-2">
+        <button class="btn btn-primary" (click)="addItemToCart()">Add to cart</button>
+      </div>
+      <div class="my-2">
+        <p>{{product.description}}</p>
+      </div>
+    </div>
+  </div>
+
+
+</div>

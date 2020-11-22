@@ -1,0 +1,6 @@
+<div routerLinkActive="active"
+     [routerLink]="['/products/category',productCategory.id]"
+  class="font-weight-bold py-3 pl-2 pr-2 list-group-item text-center sidebar-item"
+  (click)="selectItem()" #itemElement>
+  <span class="text-nowrap">{{productCategory.categoryName}}</span>
+</div>

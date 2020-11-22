@@ -1,0 +1,35 @@
+.cart-basket {
+  font-size: .6rem;
+  position: relative;
+  top: -5px;
+  left: -5px;
+  color: #fff;
+  width: 17px;
+  height: 17px;
+  background-color: #eb4147;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.no-color-link {
+  color: inherit;
+}
+
+.item-searching {
+  border-radius: 50px;
+}
+
+.item-searching-button {
+  border-radius: 50px;
+  background-color: #3878c8;
+  color: lightgray;
+}
+
+nav {
+  background-color: #418deb;
+}
+
+.shopping-cart-icon {
+  width: 50px;
+  padding: 0;
+}

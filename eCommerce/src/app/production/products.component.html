@@ -1,0 +1,20 @@
+<div class="production-area h-100">
+  <div class="d-flex  flex-column h-100">
+    <div class="flex-grow-1 d-flex flex-wrap">
+      <app-production-item
+        *ngFor="let product of products"
+        class="col-lg-3"
+        [product]="product">
+      </app-production-item>
+    </div>
+    <div class="align-self-center">
+      <ngb-pagination [collectionSize]="totalProducts"
+                      [(page)]="page"
+                      [pageSize]="pageSize"
+                      [rotate]="true"
+                      [boundaryLinks]="true"
+                      maxSize="5"
+      (pageChange)="fetchPageData()"></ngb-pagination>
+    </div>
+  </div>
+</div>

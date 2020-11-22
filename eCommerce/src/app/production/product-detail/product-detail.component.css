@@ -1,0 +1,11 @@
+.product-detail{
+  background-color: #c0ddac;
+  border-radius: 10px;
+}
+.product-title{
+  font-size: 1.5em;
+}
+.product-price{
+  color: #0c95e8;
+  font-size: 1.5em;
+}

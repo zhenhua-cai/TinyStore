@@ -1,0 +1,20 @@
+<div class="row shopping-cart-item p-1 m-3">
+  <div class="col-md-1 text-center align-self-center">
+    <button class="btn btn-danger btn-sm " (click)="onRemoveItem()">X</button>
+  </div>
+  <div class="col-md-4 align-self-center text-center">
+    <img src="{{shoppingCartItem.product.imageUrl}}" height="50px">
+  </div>
+
+  <div class="col-md-5">
+    {{shoppingCartItem.product.name}} <br>
+    <span class="font-weight-bold">{{shoppingCartItem.product.unitPrice | currency:'USD'}}</span> <br>
+    Subtotal: <span class="subtotal">{{this.shoppingCartItem.subtotal | currency:'USD'}}</span>
+  </div>
+
+  <div class="col-md-2 align-self-center text-center justify-content-center align-content-center">
+    <select name="quantity" id="quantity" class="form-control" [ngModel]="shoppingCartItem.quantity" (ngModelChange)="onSelect($event)">
+      <option value="{{i+1}}" *ngFor="let n of [].constructor(shoppingCartItem.product.unitsInStock); let i = index" >{{i+1}}</option>
+    </select>
+  </div>
+</div>

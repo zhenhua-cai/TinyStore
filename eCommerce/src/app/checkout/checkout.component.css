@@ -1,0 +1,19 @@
+.checkout-form {
+  background-color: white;
+  border-radius: 10px;
+}
+
+.customer-border {
+  width: inherit;
+}
+
+.customer-fieldset {
+  border: 2px solid lightgray;
+  border-radius: 5px;
+}
+input.ng-invalid.ng-touched, select.ng-invalid.ng-touched{
+  border:1px solid red;
+}
+.error{
+  color: red;
+}

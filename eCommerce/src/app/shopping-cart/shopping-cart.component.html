@@ -1,0 +1,28 @@
+<div class="row m-5 shopping-cart ">
+  <div class="col-md-12 ">
+    <app-shopping-cart-item *ngFor="let item of productsInCart;let i = index"
+                            [shoppingCartItem]="item" [itemIndex]="i">
+    </app-shopping-cart-item>
+    <div *ngIf="productsInCart.length>0;else emptyCart">
+      <hr>
+      <div class="float-right">
+        <div class="m-3">Total:
+          <span class="price font-weight-bold">
+            {{totalPrice | currency:'USD'}}
+          </span>
+        </div>
+        <div class="m-3">
+          <button class="btn btn-success" routerLink="/checkout">Check Out</button>
+        </div>
+      </div>
+
+    </div>
+    <ng-template #emptyCart>
+      <div class=" empty-cart text-center  align-self-center">
+        <h4 class="align-self-center mt-5">Shopping cart is empty</h4>
+        <span> <a routerLink="/">Back to shopping page</a> </span>
+      </div>
+    </ng-template>
+
+  </div>
+</div>

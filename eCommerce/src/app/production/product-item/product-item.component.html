@@ -1,0 +1,23 @@
+<mat-card class="production-item m-3">
+  <div (click)="onProductSelected(product.id)">
+    <mat-card-header class="card-text text-center">
+      <span class="font-weight-bold">{{product.name}}</span>
+    </mat-card-header>
+    <div class="d-flex justify-content-center text-break">
+      <img mat-card-lg-image src="{{product.imageUrl}}">
+    </div>
+  </div>
+  <div class="text-center">
+    <p class="card-text text-break">{{product.description}}</p>
+    <div class="mt-1 mr-2 d-flex justify-content-end">
+      <span class="price">
+        {{product.unitPrice | currency:'USD'}}
+      </span>
+    </div>
+  </div>
+  <mat-card-actions class="d-flex justify-content-end">
+    <button mat-button (click)="addItemToCart()">Add to cart</button>
+  </mat-card-actions>
+</mat-card>
+
+
