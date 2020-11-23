@@ -5,6 +5,7 @@ import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {ProductCategory} from '../models/product-category.model';
 import {ProductSearchResult} from '../models/product-search-result.model';
+import {Country} from '../../checkout/Country';
 
 @Injectable({
   providedIn: 'root'
@@ -42,8 +43,22 @@ export class DataTransactionService {
   searchProductById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.baseUrl}/products/${id}`);
   }
+
+  fetchCountries(): Observable<Country[]> {
+    return this.http.get<GetResponseCountries>(`${this.baseUrl}/countries?page=0&size=300`)
+      .pipe(
+        map((data) => {
+          return data._embedded.countries;
+        })
+      );
+  }
 }
 
+interface GetResponseCountries {
+  _embedded: {
+    countries: Country[];
+  };
+}
 
 interface GetResponseProductCategory {
   _embedded: {

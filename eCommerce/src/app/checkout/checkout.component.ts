@@ -3,7 +3,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ShoppingCartService} from '../shared/services/shopping-cart.service';
 import validate = WebAssembly.validate;
 import {CheckoutService} from './checkout.service';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
+import {Country} from './Country';
 
 @Component({
   selector: 'app-checkout',
@@ -16,10 +17,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   productPrice = 0;
   shippingFee = 0;
   totalPrice = 0;
+  countries: Country[];
   creditCardMonths: number[];
   creditCardYears: number[];
   monthSubscription: Subscription;
   yearSubscription: Subscription;
+  countriesSubscription: Subscription;
 
   constructor(private shoppingCartService: ShoppingCartService, private checkoutService: CheckoutService) {
   }
@@ -28,19 +31,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.productPrice = this.shoppingCartService.productsPrice;
     this.totalPrice = this.productPrice + this.shippingFee;
     this.createForm();
-
-    this.monthSubscription = this.checkoutService.creditCardMonthEvent.subscribe(
-      (months) => {
-        this.creditCardMonths = months;
-      }
-    );
-    this.yearSubscription = this.checkoutService.creditCardYearEvent.subscribe(
-      (years) => {
-        this.creditCardYears = years;
-
-      }
-    );
+    this.addSubcriptions();
     this.getExpirationDate();
+    this.checkoutService.getCountries();
   }
 
 
@@ -62,6 +55,46 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       return {required: true};
     }
     return null;
+  }
+
+
+  ngOnDestroy(): void {
+    this.monthSubscription.unsubscribe();
+    this.yearSubscription.unsubscribe();
+    this.countriesSubscription.unsubscribe();
+  }
+
+  onMonthChanges(year: number): void {
+    const today = new Date();
+    if (+year === today.getFullYear()) {
+      this.checkoutService.getCreditCardMonths(today.getMonth() + 1);
+    } else {
+      this.checkoutService.getCreditCardMonths(1);
+    }
+  }
+
+  onYearChanges(month: number): void {
+    const today = new Date();
+    if (+month < today.getMonth()) {
+      this.checkoutService.getCreditCardYears(today.getFullYear() + 1);
+    } else {
+      this.checkoutService.getCreditCardYears(today.getFullYear());
+    }
+  }
+
+  private addSubcriptions(): void {
+    this.monthSubscription = this.subscribServiceEvent(this.checkoutService.creditCardMonthEvent,
+      (data) => this.creditCardMonths = data);
+    this.yearSubscription = this.subscribServiceEvent(this.checkoutService.creditCardYearEvent,
+      (data) => this.creditCardYears = data);
+    this.countriesSubscription = this.subscribServiceEvent(this.checkoutService.countriesEvent,
+      (data) => this.countries = data);
+  }
+
+  private subscribServiceEvent(subject: Subject<any>, method: any): Subscription {
+    return subject.subscribe(
+      method
+    );
   }
 
   private getExpirationDate(): void {
@@ -117,25 +150,4 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
-    this.monthSubscription.unsubscribe();
-  }
-
-  onMonthChanges(year: number): void {
-    const today = new Date();
-    if (+year === today.getFullYear()) {
-      this.checkoutService.getCreditCardMonths(today.getMonth() + 1);
-    } else {
-      this.checkoutService.getCreditCardMonths(1);
-    }
-  }
-
-  onYearChanges(month: number): void {
-    const today = new Date();
-    if (+month < today.getMonth()) {
-      this.checkoutService.getCreditCardYears(today.getFullYear() + 1);
-    } else {
-      this.checkoutService.getCreditCardYears(today.getFullYear());
-    }
-  }
 }

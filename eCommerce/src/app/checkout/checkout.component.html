@@ -67,8 +67,7 @@
             <label for="country">Country</label>
             <select name="country" id="country" class="custom-select" formControlName="country" required>
               <option value="0">Select a country</option>
-              <option value="1">United States</option>
-              <option value="2">China</option>
+              <option value="{{country.code}}" *ngFor="let country of countries">{{country.name}}</option>
             </select>
             <span class="help-block error"
                   *ngIf="placeOrderForm.get('shippingAddress.country').touched && placeOrderForm.get('shippingAddress.country').hasError('required')">
@@ -226,8 +225,7 @@
                       formControlName="billingCountry"
                       class="custom-select">
                 <option value="0">Select a country</option>
-                <option value="1">United States</option>
-                <option value="2">China</option>
+                <option value="{{country.code}}" *ngFor="let country of countries">{{country.name}}</option>
               </select>
               <span class="help-block error"
                     *ngIf="placeOrderForm.get('billingAddress.billingCountry').touched && placeOrderForm.get('billingAddress.billingCountry').hasError('required')">
