@@ -3,7 +3,7 @@ import {faUser} from '@fortawesome/free-solid-svg-icons/faUser';
 import {faShoppingCart} from '@fortawesome/free-solid-svg-icons/faShoppingCart';
 import {ProductsService} from '../shared/products.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ShoppingCartService} from '../shopping-cart/shopping-cart.service';
+import {ShoppingCartService} from '../shared/shopping-cart.service';
 import {Subscription} from 'rxjs';
 
 @Component({

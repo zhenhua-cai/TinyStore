@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProductsService} from '../shared/products.service';
 import {Product} from '../shared/product.model';
-import {ShoppingCartService} from './shopping-cart.service';
+import {ShoppingCartService} from '../shared/shopping-cart.service';
 import {ShoppingCartItem} from './ShoppingCartItem.model';
 import {Subscription} from 'rxjs';
 
@@ -25,7 +25,7 @@ export class ShoppingCartComponent implements OnInit, OnDestroy {
         this.productsInCart = productsInCart;
       }
     );
-    this.totalPrice = this.shoppingCartService.totalPrice;
+    this.totalPrice = this.shoppingCartService.productsPrice;
     this.totalPriceSubscription = this.shoppingCartService.totalPriceChanged.subscribe(
       (totalPrice) => {
         this.totalPrice = totalPrice;

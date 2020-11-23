@@ -1,6 +1,7 @@
 <div class="m-5 checkout-form">
   <div class="m-5 p-5">
     <form [formGroup]="placeOrderForm" (ngSubmit)="onSubmit()">
+      <!-- customer information -->
       <fieldset class="p-3 customer-fieldset" formGroupName="customerInfo">
         <legend class="customer-border">Customer</legend>
         <div class="form-row">
@@ -9,7 +10,7 @@
             <input type="text" class="form-control"
                    id="firstname" placeholder="first name"
                    formControlName="firstName"
-            name="firstName" required>
+                   name="firstName" required>
             <span class="help-block error"
                   *ngIf="placeOrderForm.get('customerInfo.firstName').touched && placeOrderForm.get('customerInfo.firstName').hasError('required')">
               First name is required
@@ -22,7 +23,7 @@
             <input type="text" class="form-control" id="middleName"
                    placeholder="middle name"
                    formControlName="middleName"
-            name="middleName" >
+                   name="middleName">
           </div>
         </div>
         <div class="form-row mt-3">
@@ -31,7 +32,7 @@
             <input type="text" class="form-control"
                    formControlName="lastName"
                    id="lastname" placeholder="last name" required
-            name="lastName">
+                   name="lastName">
             <span class="help-block error"
                   *ngIf="placeOrderForm.get('customerInfo.lastName').touched && placeOrderForm.get('customerInfo.lastName').hasError('required')">
               Last name is required
@@ -115,8 +116,96 @@
           </div>
 
         </div>
+
+        <!-- credit Card -->
+      </fieldset>
+      <fieldset class="mt-5 p-3 customer-fieldset" formGroupName="creditCard">
+        <legend class="customer-border">Credit Card</legend>
+        <div class="form-row">
+          <div class="col-md-2">
+            <label for="cardType">Card Type</label>
+            <select name="billingCountry" id="cardType"
+                    formControlName="cardType"
+                    class="custom-select">
+              <option value="0">VISA</option>
+              <option value="1">MASTER</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row mt-3">
+          <div class="col-md-4">
+            <label for="cardHolder">Card Holder</label>
+            <input type="text" class="form-control"
+                   id="cardHolder" placeholder="Card Holder"
+                   formControlName="cardHolder"
+                   name="cardHolder" required>
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('creditCard.cardHolder').touched && placeOrderForm.get('creditCard.cardHolder').hasError('required')">
+              Card holder is required
+            </span>
+          </div>
+
+        </div>
+        <div class="form-row mt-3">
+          <div class="col-md-4">
+            <label for="cardHolder">Card Number</label>
+            <input type="text" class="form-control"
+                   id="cardNumber" placeholder="Card Number"
+                   formControlName="cardNumber"
+                   name="cardNumber" required>
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('creditCard.cardNumber').touched && placeOrderForm.get('creditCard.cardNumber').hasError('required')">
+              Card number is required
+            </span>
+          </div>
+        </div>
+
+        <div class="form-row mt-3">
+          <div class="col-md-3 mb-3 pr-5">
+            <label for="securityCode">Security Code</label>
+            <input type="text" class="form-control col-md-8"
+                   name="securityCode"
+                   formControlName="securityCode"
+                   id="securityCode" placeholder="example: 123">
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('creditCard.securityCode').touched && placeOrderForm.get('creditCard.securityCode').hasError('required')">
+              Security Code is required
+            </span>
+          </div>
+          <div class="col-md-3 mb-3 pl-3 ">
+            <label>Expiration Date</label>
+            <div class="form-row">
+              <select class=" form-control col-md-4"
+                      name="expiration"
+                      formControlName="expirationYear"
+                      id="expirationYear" data-size="5" (ngModelChange)="onMonthChanges($event)">
+                <option value="0">Year</option>
+                <option value="{{year}}" *ngFor="let year of creditCardYears">{{year}}</option>
+              </select>
+              <select  class="ml-3 form-control col-md-4"
+                     name="expiration"
+                     formControlName="expirationMonth"
+                     id="expirationMonth" (ngModelChange)="onYearChanges($event)">
+                <option value="0">Month</option>
+                <option value="{{month}}" *ngFor="let month of creditCardMonths">{{month}}</option>
+              </select>
+
+            </div>
+            <span class="help-block error"
+                  *ngIf="placeOrderForm.get('creditCard.expirationMonth').touched
+                  && placeOrderForm.get('creditCard.expirationMonth').hasError('required')
+                  ||placeOrderForm.get('creditCard.expirationYear').touched
+                  && placeOrderForm.get('creditCard.expirationYear').hasError('required')
+                ">
+              Expiration date is required
+            </span>
+          </div>
+        </div>
+
       </fieldset>
 
+      <!-- Billing Address -->
       <fieldset class="mt-5 p-3 customer-fieldset" formGroupName="billingAddress">
         <legend class="customer-border">Billing Address</legend>
         <div class="form-group">
@@ -135,7 +224,7 @@
               <label for="billing-country">Country</label>
               <select name="billingCountry" id="billing-country"
                       formControlName="billingCountry"
-                      class="custom-select" >
+                      class="custom-select">
                 <option value="0">Select a country</option>
                 <option value="1">United States</option>
                 <option value="2">China</option>
@@ -163,7 +252,7 @@
               <input type="text" class="form-control"
                      name="billingCity"
                      formControlName="billingCity"
-                     id="billing-city" >
+                     id="billing-city">
               <span class="help-block error"
                     *ngIf="placeOrderForm.get('billingAddress.billingCity').touched && placeOrderForm.get('billingAddress.billingCity').hasError('required')">
               City is required
@@ -173,7 +262,7 @@
               <label for="billing-state">State</label>
               <select name="billingState" id="billing-state"
                       formControlName="billingState"
-                      class="custom-select" >
+                      class="custom-select">
                 <option value="0">Select a state</option>
                 <option value="1">New York</option>
                 <option value="2">Wisconsin</option>

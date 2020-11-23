@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Product} from '../shared/product.model';
-import {ProductsService} from '../shared/products.service';
-import {ShoppingCartItem} from './ShoppingCartItem.model';
+import {Product} from './product.model';
+import {ProductsService} from './products.service';
+import {ShoppingCartItem} from '../shopping-cart/ShoppingCartItem.model';
 import {Subject} from 'rxjs';
+import {DataTransactionService} from './dataTransaction.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,13 @@ import {Subject} from 'rxjs';
 export class ShoppingCartService {
   products: ShoppingCartItem[] = [];
   shoppingCartChanged = new Subject<ShoppingCartItem[]>();
-  totalPrice = 0;
+  productsPrice = 0;
+  shippingPrice = 0;
   totalPriceChanged = new Subject<number>();
   totalItemsInCart = 0;
   totalItemsChanges = new Subject<number>();
 
-  constructor(private productService: ProductsService) {
+  constructor(private dataTransactionService: DataTransactionService) {
   }
 
   getShoppingCartItems(): ShoppingCartItem[] {
@@ -25,7 +27,7 @@ export class ShoppingCartService {
   removeItemFromCart(index: number): void {
     this.totalItemsInCart -= this.products[index].quantity;
     this.notifyTotalItemsChange();
-    this.totalPrice -= this.products[index].subtotal;
+    this.productsPrice -= this.products[index].subtotal;
     this.products.splice(index, 1);
     this.notifyShoppingCartChange();
     this.notifyTotalPriceChange();
@@ -36,7 +38,7 @@ export class ShoppingCartService {
       if (this.products[index].id === product.sku) {
         this.products[index].quantity++;
         this.totalItemsInCart++;
-        this.totalPrice += this.products[index].product.unitPrice;
+        this.productsPrice += this.products[index].product.unitPrice;
         this.products[index].subtotal += this.products[index].product.unitPrice;
         this.notifyTotalPriceChange();
         this.notifyTotalItemsChange();
@@ -44,18 +46,18 @@ export class ShoppingCartService {
       }
     }
     this.products.push({id: product.sku, quantity: 1, subtotal: product.unitPrice, product});
-    this.totalPrice += product.unitPrice;
+    this.productsPrice += product.unitPrice;
     this.totalItemsInCart++;
     this.notifyTotalPriceChange();
     this.notifyTotalItemsChange();
   }
 
   changeItemQuantity(index: number, quantity: number): void {
-    this.totalPrice -= this.products[index].subtotal;
+    this.productsPrice -= this.products[index].subtotal;
     this.totalItemsInCart -= this.products[index].quantity;
     this.products[index].quantity = quantity;
     this.products[index].subtotal = this.products[index].quantity * this.products[index].product.unitPrice;
-    this.totalPrice += this.products[index].subtotal;
+    this.productsPrice += this.products[index].subtotal;
     this.totalItemsInCart += quantity;
     this.notifyTotalPriceChange();
     this.notifyTotalItemsChange();
@@ -70,7 +72,7 @@ export class ShoppingCartService {
   }
 
   private notifyTotalPriceChange(): void {
-    this.totalPriceChanged.next(this.totalPrice);
+    this.totalPriceChanged.next(this.productsPrice);
   }
 
   private notifyTotalItemsChange(): void {
