@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import {ProductCategory} from '../models/product-category.model';
 import {ProductSearchResult} from '../models/product-search-result.model';
 import {Country} from '../../checkout/Country';
+import {State} from '../../checkout/State';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,20 @@ export class DataTransactionService {
         })
       );
   }
+  fetchStates(country: string): Observable<State[]> {
+    return this.http.get<GetResponseStates>(`${this.baseUrl}/states/search/findByCountryCode?code=${country}&page=0&size=300`)
+      .pipe(
+        map((data) => {
+          return data._embedded.states;
+        })
+      );
+  }
+}
+
+interface GetResponseStates {
+  _embedded: {
+    states: State[];
+  };
 }
 
 interface GetResponseCountries {

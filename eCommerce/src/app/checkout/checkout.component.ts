@@ -5,6 +5,7 @@ import validate = WebAssembly.validate;
 import {CheckoutService} from './checkout.service';
 import {Subject, Subscription} from 'rxjs';
 import {Country} from './Country';
+import {State} from './State';
 
 @Component({
   selector: 'app-checkout',
@@ -17,12 +18,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   productPrice = 0;
   shippingFee = 0;
   totalPrice = 0;
-  countries: Country[];
+  countries: Country[] = [];
+  states: State[] = [];
   creditCardMonths: number[];
   creditCardYears: number[];
   monthSubscription: Subscription;
   yearSubscription: Subscription;
   countriesSubscription: Subscription;
+  statesSubscription: Subscription;
 
   constructor(private shoppingCartService: ShoppingCartService, private checkoutService: CheckoutService) {
   }
@@ -62,6 +65,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.monthSubscription.unsubscribe();
     this.yearSubscription.unsubscribe();
     this.countriesSubscription.unsubscribe();
+    this.statesSubscription.unsubscribe();
   }
 
   onMonthChanges(year: number): void {
@@ -82,6 +86,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   }
 
+  onCountryChange(code: string): void {
+    this.checkoutService.getStatesByCountry(code);
+  }
+
   private addSubcriptions(): void {
     this.monthSubscription = this.subscribServiceEvent(this.checkoutService.creditCardMonthEvent,
       (data) => this.creditCardMonths = data);
@@ -89,6 +97,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       (data) => this.creditCardYears = data);
     this.countriesSubscription = this.subscribServiceEvent(this.checkoutService.countriesEvent,
       (data) => this.countries = data);
+    this.statesSubscription = this.subscribServiceEvent(this.checkoutService.statesEvent,
+      (data) => this.states = data);
   }
 
   private subscribServiceEvent(subject: Subject<any>, method: any): Subscription {
@@ -149,5 +159,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       }
     );
   }
+
 
 }

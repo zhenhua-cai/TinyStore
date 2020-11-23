@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable, of, Subject} from 'rxjs';
 import {Country} from './Country';
 import {DataTransactionService} from '../shared/services/dataTransaction.service';
+import {State} from './State';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class CheckoutService {
   creditCardMonthEvent = new Subject<number[]>();
   creditCardYearEvent = new Subject<number[]>();
   countriesEvent = new Subject<Country[]>();
+  statesEvent = new Subject<State[]>();
 
   constructor(private dataTransaction: DataTransactionService) {
   }
@@ -35,6 +37,14 @@ export class CheckoutService {
       .subscribe(
         (data) => {
           return this.countriesEvent.next(data);
+        }
+      );
+  }
+  getStatesByCountry(countryCode: string): void{
+    this.dataTransaction.fetchStates(countryCode)
+      .subscribe(
+        (data) => {
+          return this.statesEvent.next(data);
         }
       );
   }

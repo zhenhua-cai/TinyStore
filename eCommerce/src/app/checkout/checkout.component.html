@@ -65,7 +65,8 @@
         <div class="form-row">
           <div class="col-md-2">
             <label for="country">Country</label>
-            <select name="country" id="country" class="custom-select" formControlName="country" required>
+            <select name="country" id="country" class="custom-select" formControlName="country"
+                    (ngModelChange)="onCountryChange($event)">
               <option value="0">Select a country</option>
               <option value="{{country.code}}" *ngFor="let country of countries">{{country.name}}</option>
             </select>
@@ -95,10 +96,10 @@
           </div>
           <div class="col-md-3 mb-3 pr-5 pl-5">
             <label for="state">State</label>
-            <select name="state" id="state" class="custom-select" formControlName="state" required>
+            <select name="state" id="state" class="custom-select" formControlName="state">
               <option value="0">Select a state</option>
-              <option value="1">New York</option>
-              <option value="2">Wisconsin</option>
+              <option value="{{state.id}}"
+                      *ngFor="let state of states">{{state.name}}</option>
             </select>
             <span class="help-block error"
                   *ngIf="placeOrderForm.get('shippingAddress.state').touched && placeOrderForm.get('shippingAddress.state').hasError('required')">
@@ -223,6 +224,7 @@
               <label for="billing-country">Country</label>
               <select name="billingCountry" id="billing-country"
                       formControlName="billingCountry"
+                      (ngModelChange)="onCountryChange($event)"
                       class="custom-select">
                 <option value="0">Select a country</option>
                 <option value="{{country.code}}" *ngFor="let country of countries">{{country.name}}</option>
@@ -262,8 +264,8 @@
                       formControlName="billingState"
                       class="custom-select">
                 <option value="0">Select a state</option>
-                <option value="1">New York</option>
-                <option value="2">Wisconsin</option>
+                <option value="{{state.id}}"
+                    *ngFor="let state of states">{{state.name}}</option>
               </select>
               <span class="help-block error"
                     *ngIf="placeOrderForm.get('billingAddress.billingState').touched && placeOrderForm.get('billingAddress.billingState').hasError('required')">
