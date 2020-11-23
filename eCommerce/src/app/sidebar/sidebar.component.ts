@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ProductCategory} from '../shared/product-category.model';
-import {ProductsService} from '../shared/products.service';
+import {ProductCategory} from '../shared/models/product-category.model';
+import {ProductsService} from '../shared/services/products.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSelectionList} from '@angular/material/list';

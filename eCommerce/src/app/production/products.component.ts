@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Product} from '../shared/product.model';
-import {ProductsService} from '../shared/products.service';
+import {Product} from '../shared/models/product.model';
+import {ProductsService} from '../shared/services/products.service';
 import {Subscription} from 'rxjs';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 

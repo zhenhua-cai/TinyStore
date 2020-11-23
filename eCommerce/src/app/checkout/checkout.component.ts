@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ShoppingCartService} from '../shared/shopping-cart.service';
+import {ShoppingCartService} from '../shared/services/shopping-cart.service';
 import validate = WebAssembly.validate;
 import {CheckoutService} from './checkout.service';
 import {Subscription} from 'rxjs';
@@ -109,8 +109,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             cardHolder: new FormControl(null, [Validators.required]),
             cardNumber: new FormControl(null, [Validators.required]),
             securityCode: new FormControl(null, [Validators.required]),
-            expirationMonth: new FormControl(0, [Validators.required]),
-            expirationYear: new FormControl(0, [Validators.required])
+            expirationMonth: new FormControl(0, [Validators.required, this.requiredSelection]),
+            expirationYear: new FormControl(0, [Validators.required, this.requiredSelection])
           }
         )
       }

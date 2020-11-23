@@ -1,6 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {ProductCategory} from '../../shared/product-category.model';
-import {ProductsService} from '../../shared/products.service';
+import {ProductCategory} from '../../shared/models/product-category.model';
+import {ProductsService} from '../../shared/services/products.service';
 
 @Component({
   selector: 'app-sidebar-item',

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ProductsService} from '../shared/products.service';
+import {ProductsService} from '../shared/services/products.service';
 
 @Component({
   selector: 'app-main-content',

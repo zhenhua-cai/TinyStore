@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ProductsService} from '../shared/products.service';
-import {Product} from '../shared/product.model';
-import {ShoppingCartService} from '../shared/shopping-cart.service';
+import {ProductsService} from '../shared/services/products.service';
+import {Product} from '../shared/models/product.model';
+import {ShoppingCartService} from '../shared/services/shopping-cart.service';
 import {ShoppingCartItem} from './ShoppingCartItem.model';
 import {Subscription} from 'rxjs';
 

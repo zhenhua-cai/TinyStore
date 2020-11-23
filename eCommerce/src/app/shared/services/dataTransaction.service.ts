@@ -1,10 +1,10 @@
 import {HttpClient} from '@angular/common/http';
-import {Product} from './product.model';
+import {Product} from '../models/product.model';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {ProductCategory} from './product-category.model';
-import {ProductSearchResult} from './product-search-result.model';
+import {ProductCategory} from '../models/product-category.model';
+import {ProductSearchResult} from '../models/product-search-result.model';
 
 @Injectable({
   providedIn: 'root'

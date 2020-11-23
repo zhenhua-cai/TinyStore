@@ -1,8 +1,8 @@
 import {Injectable, OnInit} from '@angular/core';
-import {Product} from './product.model';
+import {Product} from '../models/product.model';
 import {DataTransactionService} from './dataTransaction.service';
 import {Observable, Subject} from 'rxjs';
-import {ProductCategory} from './product-category.model';
+import {ProductCategory} from '../models/product-category.model';
 
 @Injectable({
   providedIn: 'root'
