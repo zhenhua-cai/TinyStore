@@ -12,7 +12,8 @@
                    formControlName="firstName"
                    name="firstName" required>
             <span class="help-block error"
-                  *ngIf="placeOrderForm.get('customerInfo.firstName').touched && placeOrderForm.get('customerInfo.firstName').hasError('required')">
+                  *ngIf="firstname.touched &&
+                   (firstname.hasError('required') || firstname.errors.notOnlyWhitespace)">
               First name is required
             </span>
           </div>
@@ -34,7 +35,8 @@
                    id="lastname" placeholder="last name" required
                    name="lastName">
             <span class="help-block error"
-                  *ngIf="placeOrderForm.get('customerInfo.lastName').touched && placeOrderForm.get('customerInfo.lastName').hasError('required')">
+                  *ngIf="lastname.touched &&
+                  (lastname.hasError('required') || lastname.errors.notOnlyWhitespace)">
               Last name is required
             </span>
           </div>
@@ -47,11 +49,11 @@
                    formControlName="email"
                    placeholder="example@email.com" email required>
             <span class="help-block error"
-                  *ngIf="placeOrderForm.get('customerInfo.email').touched && placeOrderForm.get('customerInfo.email').hasError('required')">
+                  *ngIf="email.touched && email.hasError('required')">
               Email is required
             </span>
             <span class="help-block error"
-                  *ngIf="placeOrderForm.get('customerInfo.email').touched && placeOrderForm.get('customerInfo.email').hasError('email')">
+                  *ngIf="email.touched && email.hasError('pattern')">
               Email is invalid
             </span>
           </div>
@@ -71,7 +73,7 @@
               <option value="{{country.code}}" *ngFor="let country of countries">{{country.name}}</option>
             </select>
             <span class="help-block error"
-                  *ngIf="placeOrderForm.get('shippingAddress.country').touched && placeOrderForm.get('shippingAddress.country').hasError('required')">
+                  *ngIf="shippingCountry.touched && shippingCountry.hasError('required')">
               Country is required
             </span>
           </div>
@@ -81,7 +83,8 @@
           <label for="street">Street</label>
           <input type="text" class="form-control" id="street" name="street" formControlName="street" required>
           <span class="help-block error"
-                *ngIf="placeOrderForm.get('shippingAddress.street').touched && placeOrderForm.get('shippingAddress.street').hasError('required')">
+                *ngIf="shippingStreet.touched &&
+                 (shippingStreet.hasError('required') || shippingStreet.errors.notOnlyWhitespace)">
               Street is required
             </span>
         </div>
@@ -90,7 +93,8 @@
             <label for="city">City</label>
             <input type="text" class="form-control" id="city" name="city" formControlName="city" required>
             <span class="help-block error"
-                  *ngIf="placeOrderForm.get('shippingAddress.city').touched && placeOrderForm.get('shippingAddress.city').hasError('required')">
+                  *ngIf="shippingCity.touched &&
+                  (shippingCity.hasError('required') || shippingCity.errors.notOnlyWhitespace)">
               City is required
             </span>
           </div>
@@ -102,7 +106,7 @@
                       *ngFor="let state of states">{{state.name}}</option>
             </select>
             <span class="help-block error"
-                  *ngIf="placeOrderForm.get('shippingAddress.state').touched && placeOrderForm.get('shippingAddress.state').hasError('required')">
+                  *ngIf="shippingState.touched && shippingState.hasError('required')">
               State is required
             </span>
           </div>
@@ -110,7 +114,8 @@
             <label for="zipcode">Zip Code</label>
             <input type="text" class="form-control" id="zipcode" name="zipcode" formControlName="zipcode" required>
             <span class="help-block error"
-                  *ngIf="placeOrderForm.get('shippingAddress.zipcode').touched && placeOrderForm.get('shippingAddress.zipcode').hasError('required')">
+                  *ngIf="shippingZipcode.touched &&
+                  (shippingZipcode.hasError('required') || shippingZipcode.errors.notOnlyWhitespace)">
               Zip Code is required
             </span>
           </div>
@@ -193,10 +198,10 @@
 
             </div>
             <span class="help-block error"
-                  *ngIf="placeOrderForm.get('creditCard.expirationMonth').touched
-                  && placeOrderForm.get('creditCard.expirationMonth').hasError('required')
-                  ||placeOrderForm.get('creditCard.expirationYear').touched
-                  && placeOrderForm.get('creditCard.expirationYear').hasError('required')
+                  *ngIf="expirationMonth.touched
+                  &&expirationMonth.hasError('required')
+                  ||expirationYear.touched
+                  && expirationYear.hasError('required')
                 ">
               Expiration date is required
             </span>

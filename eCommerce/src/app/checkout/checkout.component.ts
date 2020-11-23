@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {ShoppingCartService} from '../shared/services/shopping-cart.service';
 import validate = WebAssembly.validate;
 import {CheckoutService} from './checkout.service';
@@ -53,9 +53,16 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.shoppingCartService.checkout();
   }
 
-  requiredSelection(control: FormControl): { [s: string]: boolean } {
+  requiredSelection(control: FormControl): ValidationErrors {
     if (+control.value === 0) {
       return {required: true};
+    }
+    return null;
+  }
+
+  noOnlyWhitespace(control: FormControl): ValidationErrors {
+    if (control.value != null && control.value.trim().length === 0) {
+      return {notOnlyWhitespace: true};
     }
     return null;
   }
@@ -90,6 +97,50 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.checkoutService.getStatesByCountry(code);
   }
 
+  get email(): FormControl {
+    return this.placeOrderForm.get('customerInfo.email') as FormControl;
+  }
+
+  get lastname(): FormControl {
+    return this.placeOrderForm.get('customerInfo.lastName') as FormControl;
+  }
+
+  get firstname(): FormControl {
+    return this.placeOrderForm.get('customerInfo.firstName') as FormControl;
+  }
+
+  get middleName(): FormControl {
+    return this.placeOrderForm.get('customerInfo.middleName') as FormControl;
+  }
+
+  get shippingCountry(): FormControl {
+    return this.placeOrderForm.get('shippingAddress.country') as FormControl;
+  }
+
+  get shippingStreet(): FormControl {
+    return this.placeOrderForm.get('shippingAddress.street') as FormControl;
+  }
+
+  get shippingCity(): FormControl {
+    return this.placeOrderForm.get('shippingAddress.city') as FormControl;
+  }
+
+  get shippingState(): FormControl {
+    return this.placeOrderForm.get('shippingAddress.state') as FormControl;
+  }
+
+  get shippingZipcode(): FormControl {
+    return this.placeOrderForm.get('shippingAddress.zipcode') as FormControl;
+  }
+
+  get expirationMonth(): FormControl {
+    return this.placeOrderForm.get('creditCard.expirationMonth') as FormControl;
+  }
+
+  get expirationYear(): FormControl {
+    return this.placeOrderForm.get('creditCard.expirationYear') as FormControl;
+  }
+
   private addSubcriptions(): void {
     this.monthSubscription = this.subscribServiceEvent(this.checkoutService.creditCardMonthEvent,
       (data) => this.creditCardMonths = data);
@@ -116,10 +167,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   private addBillingControls(): void {
     this.placeOrderForm.addControl('billingAddress', new FormGroup({
       billingCountry: new FormControl(0, [this.requiredSelection]),
-      billingStreet: new FormControl(null, [Validators.required]),
-      billingCity: new FormControl(null, [Validators.required]),
-      billingState: new FormControl(null, [Validators.required]),
-      billingZipcode: new FormControl(null, [Validators.required]),
+      billingStreet: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
+      billingCity: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
+      billingState: new FormControl(null, [this.requiredSelection]),
+      billingZipcode: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
     }));
   }
 
@@ -127,33 +178,35 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.placeOrderForm = new FormGroup(
       {
         customerInfo: new FormGroup({
-          firstName: new FormControl(null),
-          middleName: new FormControl(null),
-          lastName: new FormControl(null),
-          email: new FormControl(null, [Validators.required, Validators.email]),
+          firstName: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
+          middleName: new FormControl(null, [this.noOnlyWhitespace]),
+          lastName: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
+          email: new FormControl(null,
+            [Validators.required,
+              Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
         }),
         shippingAddress: new FormGroup({
           country: new FormControl(0, [this.requiredSelection]),
-          street: new FormControl(null, [Validators.required]),
-          city: new FormControl(null, [Validators.required]),
+          street: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
+          city: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
           state: new FormControl(0, [this.requiredSelection]),
-          zipcode: new FormControl(null, [Validators.required]),
+          zipcode: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
         }),
         billingAddress: new FormGroup({
           billingCountry: new FormControl(0, [this.requiredSelection]),
-          billingStreet: new FormControl(null, [Validators.required]),
-          billingCity: new FormControl(null, [Validators.required]),
+          billingStreet: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
+          billingCity: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
           billingState: new FormControl(0, [this.requiredSelection]),
-          billingZipcode: new FormControl(null, [Validators.required]),
+          billingZipcode: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
         }),
         creditCard: new FormGroup(
           {
             cardType: new FormControl(0),
-            cardHolder: new FormControl(null, [Validators.required]),
-            cardNumber: new FormControl(null, [Validators.required]),
-            securityCode: new FormControl(null, [Validators.required]),
-            expirationMonth: new FormControl(0, [Validators.required, this.requiredSelection]),
-            expirationYear: new FormControl(0, [Validators.required, this.requiredSelection])
+            cardHolder: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
+            cardNumber: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
+            securityCode: new FormControl(null, [Validators.required, this.noOnlyWhitespace]),
+            expirationMonth: new FormControl(0, [this.requiredSelection]),
+            expirationYear: new FormControl(0, [this.requiredSelection])
           }
         )
       }
